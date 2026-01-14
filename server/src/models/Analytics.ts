@@ -156,9 +156,11 @@ analyticsSchema.statics.getVisitorStats = async function (
   return stats[0] || { totalVisitors: 0, totalPageViews: 0, uniquePages: 0 };
 };
 
-// Indexes
+// Indexes for efficient querying
 analyticsSchema.index({ sessionId: 1 });
 analyticsSchema.index({ lastVisit: -1 });
 analyticsSchema.index({ firstVisit: -1 });
+// Compound index for date range queries
+analyticsSchema.index({ lastVisit: 1, firstVisit: 1 });
 
 export const Analytics = mongoose.model<IAnalytics, IAnalyticsModel>('Analytics', analyticsSchema);

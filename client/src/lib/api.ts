@@ -4,16 +4,18 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1
 
 export const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true,
+  withCredentials: true, // Enable httpOnly cookies for refresh tokens
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 // Add request interceptor for auth token
+// Note: Access tokens are stored in sessionStorage for SPA convenience.
+// Refresh tokens are stored in httpOnly cookies for security.
+// The access token has a short expiry (15 min) to minimize XSS risk.
 api.interceptors.request.use(
   (config) => {
-    // Get token from memory/context if available
     const token = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

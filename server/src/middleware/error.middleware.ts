@@ -1,17 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
-// Custom error class
+// Custom error class with validation errors support
 export class AppError extends Error {
   statusCode: number;
   status: string;
   isOperational: boolean;
+  validationErrors?: Array<{ field: string; message: string }>;
 
-  constructor(message: string, statusCode: number) {
+  constructor(message: string, statusCode: number, validationErrors?: Array<{ field: string; message: string }>) {
     super(message);
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
     this.isOperational = true;
+    this.validationErrors = validationErrors;
 
     Error.captureStackTrace(this, this.constructor);
   }
@@ -24,7 +26,7 @@ const handleValidationError = (err: mongoose.Error.ValidationError) => {
     message: el.message,
   }));
   
-  return new AppError('Validation failed', 400);
+  return new AppError('Validation failed', 400, errors);
 };
 
 // Handle Mongoose duplicate key errors
@@ -86,9 +88,13 @@ export const errorHandler = (
   const statusCode = error.statusCode || 500;
   const status = statusCode >= 500 ? 'error' : 'fail';
 
+  // Get validation errors if they exist
+  const validationErrors = (error as AppError).validationErrors;
+
   res.status(statusCode).json({
     status,
     message: error.message || 'Something went wrong',
+    ...(validationErrors && { errors: validationErrors }),
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
