@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter } from 'lucide-react';
-import { Input } from '@/components/ui/Input';
+import { Search } from 'lucide-react';
 import { ProjectCard } from '@/components/sections/ProjectsSection';
 import { ProjectCardSkeleton } from '@/components/ui/Skeleton';
+import { useAllProjects } from '@/hooks/useData';
 import type { Project } from '@/types';
 
-// Demo projects - In production, these would come from the API
-const demoProjects: Project[] = [
+// Fallback projects for when API is not available
+const fallbackProjects: Project[] = [
   {
     _id: '1',
     title: 'AI-Powered Task Manager',
@@ -54,48 +54,6 @@ const demoProjects: Project[] = [
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
-  {
-    _id: '4',
-    title: 'Social Media Scheduler',
-    slug: 'social-scheduler',
-    description: 'Automated social media posting tool with analytics and multi-platform support.',
-    technologies: ['React', 'Express', 'MongoDB', 'Twitter API', 'Bull'],
-    category: 'ai-generated',
-    images: { gallery: [] },
-    featured: false,
-    viewCount: 98,
-    liveUrl: 'https://example.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    _id: '5',
-    title: 'Portfolio Website',
-    slug: 'portfolio-website',
-    description: 'Modern portfolio website built with Next.js and showcasing AI-driven development.',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    category: 'ai-generated',
-    images: { gallery: [] },
-    featured: false,
-    viewCount: 312,
-    githubUrl: 'https://github.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    _id: '6',
-    title: 'API Gateway',
-    slug: 'api-gateway',
-    description: 'High-performance API gateway with rate limiting, caching, and authentication.',
-    technologies: ['Go', 'Redis', 'Docker', 'Kubernetes'],
-    category: 'manual',
-    images: { gallery: [] },
-    featured: false,
-    viewCount: 145,
-    githubUrl: 'https://github.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
 ];
 
 const categories = [
@@ -106,22 +64,32 @@ const categories = [
 ];
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { projects: apiProjects, isLoading, error, refetch } = useAllProjects();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
+  // Debounce search
   useEffect(() => {
-    // Simulate API call
     const timer = setTimeout(() => {
-      setProjects(demoProjects);
-      setIsLoading(false);
-    }, 1000);
-
+      setDebouncedSearch(searchQuery);
+    }, 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [searchQuery]);
 
-  const filteredProjects = projects.filter((project) => {
+  // Refetch when filters change
+  useEffect(() => {
+    refetch({
+      category: selectedCategory,
+      search: debouncedSearch,
+    });
+  }, [selectedCategory, debouncedSearch, refetch]);
+
+  // Use API data if available, otherwise use fallback
+  const projects = apiProjects.length > 0 || !error ? apiProjects : fallbackProjects;
+
+  // Client-side filtering for fallback data
+  const filteredProjects = error ? projects.filter((project) => {
     const matchesSearch =
       project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -133,7 +101,7 @@ export default function ProjectsPage() {
       selectedCategory === 'all' || project.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
-  });
+  }) : projects;
 
   return (
     <div className="min-h-screen py-20">

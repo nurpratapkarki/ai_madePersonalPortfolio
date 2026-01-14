@@ -6,10 +6,11 @@ import { ArrowLeft, ExternalLink, Github, Sparkles, Eye, Calendar } from 'lucide
 import { Button } from '@/components/ui/Button';
 import { formatDate } from '@/lib/utils';
 import { useParams } from 'next/navigation';
+import { useProject } from '@/hooks/useData';
 import type { Project } from '@/types';
 
-// Demo project data - In production, this would be fetched from the API
-const demoProject: Project = {
+// Fallback project data when API is not available
+const fallbackProject: Project = {
   _id: '1',
   title: 'AI-Powered Task Manager',
   slug: 'ai-task-manager',
@@ -63,7 +64,36 @@ The application is built using modern web technologies and follows best practice
 
 export default function ProjectPage() {
   const params = useParams();
-  const project = demoProject; // In production, fetch based on params.slug
+  const slug = params.slug as string;
+  
+  // Fetch project from API
+  const { project: apiProject, isLoading, error } = useProject(slug);
+  
+  // Use API data if available, otherwise fallback
+  const project = apiProject || fallbackProject;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-pulse space-y-8">
+            <div className="h-6 w-32 bg-gray-200 rounded" />
+            <div className="h-12 w-3/4 bg-gray-200 rounded" />
+            <div className="h-6 w-1/2 bg-gray-200 rounded" />
+            <div className="flex gap-4">
+              <div className="h-12 w-40 bg-gray-200 rounded-lg" />
+              <div className="h-12 w-40 bg-gray-200 rounded-lg" />
+            </div>
+            <div className="space-y-4">
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-4 bg-gray-200 rounded w-5/6" />
+              <div className="h-4 bg-gray-200 rounded w-4/6" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-20">

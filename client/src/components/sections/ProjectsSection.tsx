@@ -114,12 +114,14 @@ interface ProjectsSectionProps {
   projects?: Project[];
   title?: string;
   showViewAll?: boolean;
+  isLoading?: boolean;
 }
 
 export function ProjectsSection({ 
   projects = [], 
   title = 'Featured Projects',
-  showViewAll = true 
+  showViewAll = true,
+  isLoading = false
 }: ProjectsSectionProps) {
   return (
     <section id="projects" className="py-20 bg-gray-50">
@@ -138,7 +140,23 @@ export function ProjectsSection({
           </p>
         </motion.div>
 
-        {projects.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="rounded-xl border border-gray-200 overflow-hidden bg-white">
+                <div className="h-48 bg-gray-100 animate-pulse" />
+                <div className="p-5 space-y-3">
+                  <div className="h-6 bg-gray-100 rounded animate-pulse" />
+                  <div className="h-4 bg-gray-100 rounded animate-pulse w-2/3" />
+                  <div className="flex gap-2">
+                    <div className="h-6 w-16 bg-gray-100 rounded-full animate-pulse" />
+                    <div className="h-6 w-16 bg-gray-100 rounded-full animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : projects.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project, index) => (

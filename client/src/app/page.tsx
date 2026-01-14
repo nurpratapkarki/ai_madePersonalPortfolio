@@ -1,11 +1,15 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
 import { ContactSection } from '@/components/sections/ContactSection';
-import type { Project } from '@/types';
+import { useProjects, useContent } from '@/hooks/useData';
+import type { Project, HeroContent, SkillsContent } from '@/types';
 
-// Demo projects data - In production, this would come from the API
-const demoProjects: Project[] = [
+// Fallback data for when API is not available
+const fallbackProjects: Project[] = [
   {
     _id: '1',
     title: 'AI-Powered Task Manager',
@@ -52,15 +56,37 @@ const demoProjects: Project[] = [
   },
 ];
 
+const fallbackHeroContent: HeroContent = {
+  name: 'Alex Developer',
+  tagline: 'AI-First Full-Stack Developer',
+  bio: 'Building production-ready applications through innovative prompt engineering and cutting-edge web technologies. Passionate about creating elegant solutions that make a difference.',
+};
+
 export default function Home() {
+  // Fetch featured projects from API
+  const { projects: apiProjects, isLoading: projectsLoading, error: projectsError } = useProjects({ 
+    featured: true, 
+    limit: 6 
+  });
+  
+  // Fetch hero content from API
+  const { content: heroContent, isLoading: heroLoading } = useContent<HeroContent>('hero');
+
+  // Use API data if available, otherwise fallback to static data
+  const projects = apiProjects.length > 0 ? apiProjects : fallbackProjects;
+  const hero = heroContent || fallbackHeroContent;
+
   return (
     <>
       <HeroSection 
-        name="Alex Developer"
-        tagline="AI-First Full-Stack Developer"
-        bio="Building production-ready applications through innovative prompt engineering and cutting-edge web technologies. Passionate about creating elegant solutions that make a difference."
+        name={hero.name}
+        tagline={hero.tagline}
+        bio={hero.bio}
       />
-      <ProjectsSection projects={demoProjects} />
+      <ProjectsSection 
+        projects={projects} 
+        isLoading={projectsLoading}
+      />
       <SkillsSection />
       <ContactSection />
     </>
