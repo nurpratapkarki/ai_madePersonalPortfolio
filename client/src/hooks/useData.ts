@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/lib/api';
-import type { Project, Content, HeroContent, SkillsContent } from '@/types';
+import type { Project, HeroContent } from '@/types';
 
 // Projects hooks
 export function useProjects(options?: {
@@ -53,8 +53,12 @@ export function useProject(slug: string) {
         setProject(response.data.data.project);
         setError(null);
         
-        // Increment view count
-        await api.post(`/projects/${response.data.data.project._id}/view`);
+        // Increment view count (silently, don't fail if this errors)
+        try {
+          await api.post(`/projects/${response.data.data.project._id}/view`);
+        } catch {
+          // Silent fail - view count increment is not critical
+        }
       } catch (err) {
         setError('Failed to fetch project');
         console.error('Error fetching project:', err);
@@ -110,7 +114,7 @@ export function useAllProjects() {
     totalPages: 0,
   });
 
-  const fetchProjects = useCallback(async (params?: {
+  const fetchProjects = async (params?: {
     page?: number;
     limit?: number;
     category?: string;
@@ -136,11 +140,13 @@ export function useAllProjects() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
 
+  // Initial fetch on mount only
   useEffect(() => {
     fetchProjects();
-  }, [fetchProjects]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { projects, isLoading, error, pagination, refetch: fetchProjects };
 }

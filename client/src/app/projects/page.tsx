@@ -77,31 +77,35 @@ export default function ProjectsPage() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Refetch when filters change
+  // Refetch when filters change (only after initial mount)
   useEffect(() => {
-    refetch({
-      category: selectedCategory,
-      search: debouncedSearch,
-    });
+    if (debouncedSearch || selectedCategory !== 'all') {
+      refetch({
+        category: selectedCategory,
+        search: debouncedSearch,
+      });
+    }
   }, [selectedCategory, debouncedSearch, refetch]);
 
-  // Use API data if available, otherwise use fallback
-  const projects = apiProjects.length > 0 || !error ? apiProjects : fallbackProjects;
+  // Use API data if available, otherwise use fallback when there's an error
+  const projects = error ? fallbackProjects : apiProjects;
 
-  // Client-side filtering for fallback data
-  const filteredProjects = error ? projects.filter((project) => {
-    const matchesSearch =
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.technologies.some((tech) =>
-        tech.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+  // Client-side filtering only for fallback data (API handles filtering when available)
+  const filteredProjects = error 
+    ? projects.filter((project) => {
+        const matchesSearch =
+          project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.technologies.some((tech) =>
+            tech.toLowerCase().includes(searchQuery.toLowerCase())
+          );
 
-    const matchesCategory =
-      selectedCategory === 'all' || project.category === selectedCategory;
+        const matchesCategory =
+          selectedCategory === 'all' || project.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
-  }) : projects;
+        return matchesSearch && matchesCategory;
+      }) 
+    : projects;
 
   return (
     <div className="min-h-screen py-20">
