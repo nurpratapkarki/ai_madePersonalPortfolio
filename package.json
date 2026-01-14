@@ -1,0 +1,30 @@
+{
+  "name": "ai-portfolio",
+  "version": "1.0.0",
+  "description": "AI-First Full-Stack Portfolio - A production-ready portfolio website showcasing AI-driven development capabilities",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "start": "npm run start:server",
+    "start:server": "cd server && npm run start",
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "express",
+    "typescript",
+    "ai-generated",
+    "full-stack"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
