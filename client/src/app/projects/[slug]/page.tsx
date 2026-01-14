@@ -7,60 +7,8 @@ import { Button } from '@/components/ui/Button';
 import { formatDate } from '@/lib/utils';
 import { useParams } from 'next/navigation';
 import { useProject } from '@/hooks/useData';
+import { getDemoProjectBySlug, demoProjects } from '@/lib/demoData';
 import type { Project } from '@/types';
-
-// Fallback project data when API is not available
-const fallbackProject: Project = {
-  _id: '1',
-  title: 'AI-Powered Task Manager',
-  slug: 'ai-task-manager',
-  description: 'A smart task management app with AI-powered prioritization and scheduling features.',
-  fullDescription: `
-# AI-Powered Task Manager
-
-This project demonstrates the power of AI-assisted development in creating a sophisticated task management solution.
-
-## Features
-
-- **Smart Prioritization**: AI analyzes task descriptions and automatically suggests priority levels
-- **Intelligent Scheduling**: Machine learning algorithms optimize your daily schedule
-- **Natural Language Input**: Add tasks using natural language processing
-- **Collaboration**: Real-time collaboration features for team productivity
-
-## Technical Highlights
-
-The application is built using modern web technologies and follows best practices for scalability and maintainability.
-
-### Architecture
-
-- Frontend built with Next.js 14 and TypeScript
-- Backend API powered by Express.js
-- MongoDB for flexible data storage
-- OpenAI GPT-4 for intelligent features
-- Real-time updates via WebSockets
-
-### Performance Optimizations
-
-- Server-side rendering for optimal performance
-- Lazy loading of components
-- Efficient caching strategies
-- Image optimization with Next.js Image
-  `,
-  technologies: ['Next.js', 'TypeScript', 'OpenAI', 'MongoDB', 'Tailwind CSS', 'Express.js', 'WebSocket'],
-  category: 'ai-generated',
-  images: { gallery: [] },
-  featured: true,
-  viewCount: 156,
-  liveUrl: 'https://example.com',
-  githubUrl: 'https://github.com',
-  aiPrompts: [
-    'Create a Next.js task manager with AI prioritization using OpenAI API',
-    'Implement natural language processing for task creation',
-    'Add real-time collaboration features with WebSocket',
-  ],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
 
 export default function ProjectPage() {
   const params = useParams();
@@ -69,8 +17,8 @@ export default function ProjectPage() {
   // Fetch project from API
   const { project: apiProject, isLoading, error } = useProject(slug);
   
-  // Use API data if available, otherwise fallback
-  const project = apiProject || fallbackProject;
+  // Use API data if available, otherwise fallback to demo data
+  const project = apiProject || getDemoProjectBySlug(slug) || demoProjects[0];
 
   if (isLoading) {
     return (

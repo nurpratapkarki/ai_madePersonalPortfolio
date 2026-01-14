@@ -68,7 +68,31 @@ cp server/.env.example server/.env
 cp client/.env.example client/.env.local
 ```
 
-### 4. Start Development Servers
+### 4. Start Local MongoDB (or use Atlas)
+
+For local development, you can:
+- Install MongoDB locally: `mongodb://localhost:27017/portfolio`
+- Or use MongoDB Atlas free tier (see Database Setup section)
+
+### 5. Seed the Database with Demo Data
+
+This populates your local database with sample projects and content so you can see the app in action:
+
+```bash
+cd server
+npm run seed
+```
+
+This will create:
+- **6 demo projects** (AI-generated, Hybrid, and Manual categories)
+- **Content sections** (Hero, About, Skills, Contact, Settings)
+- **Admin user** with credentials:
+  - Email: `admin@portfolio.local`
+  - Password: `Admin123!`
+
+⚠️ **Important:** Change the admin password in production!
+
+### 6. Start Development Servers
 
 **Option A: Run both together (from root)**
 ```bash
@@ -93,6 +117,10 @@ Access the app at:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
 - API Health Check: http://localhost:5000/health
+
+### 7. Access Admin Panel
+
+Press `Ctrl+Shift+A` on any page to access the admin login, then use the seeded credentials.
 
 ---
 

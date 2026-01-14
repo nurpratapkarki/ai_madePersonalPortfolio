@@ -1,60 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { ProjectCard } from '@/components/sections/ProjectsSection';
 import { ProjectCardSkeleton } from '@/components/ui/Skeleton';
 import { useAllProjects } from '@/hooks/useData';
+import { demoProjects } from '@/lib/demoData';
 import type { Project } from '@/types';
-
-// Fallback projects for when API is not available
-const fallbackProjects: Project[] = [
-  {
-    _id: '1',
-    title: 'AI-Powered Task Manager',
-    slug: 'ai-task-manager',
-    description: 'A smart task management app with AI-powered prioritization and scheduling features.',
-    technologies: ['Next.js', 'TypeScript', 'OpenAI', 'MongoDB', 'Tailwind CSS'],
-    category: 'ai-generated',
-    images: { gallery: [] },
-    featured: true,
-    viewCount: 156,
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    _id: '2',
-    title: 'E-Commerce Platform',
-    slug: 'ecommerce-platform',
-    description: 'Full-featured e-commerce solution with payment integration and inventory management.',
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe', 'Redis'],
-    category: 'hybrid',
-    images: { gallery: [] },
-    featured: true,
-    viewCount: 234,
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    _id: '3',
-    title: 'Real-Time Analytics Dashboard',
-    slug: 'analytics-dashboard',
-    description: 'Interactive dashboard for monitoring business metrics with real-time data visualization.',
-    technologies: ['Vue.js', 'D3.js', 'WebSocket', 'Python', 'ClickHouse'],
-    category: 'manual',
-    images: { gallery: [] },
-    featured: true,
-    viewCount: 189,
-    githubUrl: 'https://github.com',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
 
 const categories = [
   { value: 'all', label: 'All' },
@@ -88,7 +41,7 @@ export default function ProjectsPage() {
   }, [selectedCategory, debouncedSearch, refetch]);
 
   // Use API data if available, otherwise use fallback when there's an error
-  const projects = error ? fallbackProjects : apiProjects;
+  const projects = error ? demoProjects : apiProjects;
 
   // Client-side filtering only for fallback data (API handles filtering when available)
   const filteredProjects = error 

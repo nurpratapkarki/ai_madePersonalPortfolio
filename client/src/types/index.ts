@@ -58,6 +58,12 @@ export interface SkillsContent {
   }>;
 }
 
+export interface SkillCategory {
+  name: string;
+  icon?: string;
+  skills: string[];
+}
+
 export interface ContactContent {
   email: string;
   phone?: string;
