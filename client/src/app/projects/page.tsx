@@ -7,7 +7,7 @@ import { ProjectCard } from '@/components/sections/ProjectsSection';
 import { ProjectCardSkeleton } from '@/components/ui/Skeleton';
 import { useAllProjects } from '@/hooks/useData';
 import { demoProjects } from '@/lib/demoData';
-import type { Project } from '@/types';
+
 
 const categories = [
   { value: 'all', label: 'All' },

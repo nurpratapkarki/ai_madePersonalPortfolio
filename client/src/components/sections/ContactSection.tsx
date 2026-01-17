@@ -9,7 +9,7 @@ import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
-import api from '@/lib/api';
+
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -32,6 +32,7 @@ export function ContactSection() {
     resolver: zodResolver(contactSchema),
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: ContactFormData) => {
     setStatus('loading');
     setErrorMessage('');

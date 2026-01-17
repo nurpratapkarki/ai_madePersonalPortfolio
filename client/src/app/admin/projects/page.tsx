@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+
 import { Plus, Search, Edit, Trash2, Eye, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import type { Project } from '@/types';

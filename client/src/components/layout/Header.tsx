@@ -28,9 +28,9 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
+  const handleMobileNavClick = () => {
     setIsMenuOpen(false);
-  }, [pathname]);
+  };
 
   return (
     <header
@@ -94,6 +94,7 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={handleMobileNavClick}
                     className={cn(
                       'block py-2 px-4 rounded-lg text-base font-medium transition-colors',
                       pathname === link.href

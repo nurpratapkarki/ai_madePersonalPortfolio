@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
-import type { Project, HeroContent } from '@/types';
+import type { Project } from '@/types';
 
 // Projects hooks
 export function useProjects(options?: {
@@ -145,7 +145,6 @@ export function useAllProjects() {
   // Initial fetch on mount only
   useEffect(() => {
     fetchProjects();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { projects, isLoading, error, pagination, refetch: fetchProjects };
