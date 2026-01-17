@@ -8,14 +8,14 @@ import { formatDate } from '@/lib/utils';
 import { useParams } from 'next/navigation';
 import { useProject } from '@/hooks/useData';
 import { getDemoProjectBySlug, demoProjects } from '@/lib/demoData';
-import type { Project } from '@/types';
+
 
 export default function ProjectPage() {
   const params = useParams();
   const slug = params.slug as string;
   
   // Fetch project from API
-  const { project: apiProject, isLoading, error } = useProject(slug);
+  const { project: apiProject, isLoading } = useProject(slug);
   
   // Use API data if available, otherwise fallback to demo data
   const project = apiProject || getDemoProjectBySlug(slug) || demoProjects[0];

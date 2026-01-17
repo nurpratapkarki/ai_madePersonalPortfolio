@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Download, Sparkles, Calendar, MapPin, Briefcase } from 'lucide-react';
+import { Download, Sparkles, Calendar, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SkillsSection } from '@/components/sections/SkillsSection';
 

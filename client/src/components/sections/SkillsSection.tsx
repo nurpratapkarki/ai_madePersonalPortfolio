@@ -2,20 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { 
-  Code2, 
   Server, 
   Sparkles, 
   Cloud,
-  Database,
   Layout,
-  Terminal,
-  Cpu
 } from 'lucide-react';
-
-interface Skill {
-  name: string;
-  icon?: React.ReactNode;
-}
 
 interface SkillCategory {
   name: string;

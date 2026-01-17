@@ -68,7 +68,7 @@ export default function ContactPage() {
             className="lg:col-span-1"
           >
             <div className="space-y-6">
-              {contactInfo.map((item, index) => (
+              {contactInfo.map((item) => (
                 <div
                   key={item.label}
                   className="flex items-start gap-4"
