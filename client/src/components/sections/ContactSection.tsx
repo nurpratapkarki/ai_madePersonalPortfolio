@@ -32,7 +32,8 @@ export function ContactSection() {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit = async (data: ContactFormData) => {
     setStatus('loading');
     setErrorMessage('');
 
