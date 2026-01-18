@@ -97,21 +97,19 @@ export default function AdminSettingsPage() {
             <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
               <Key className="h-5 w-5" />
             </div>
-            <h2 className="text-lg font-semibold text-gray-900">Admin Key Combo</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Admin Access Method</h2>
           </div>
 
           <p className="text-gray-600 mb-4">
-            Current key combination to access admin panel:
+            Current method to access admin panel:
           </p>
-          <div className="flex gap-2 mb-4">
-            <kbd className="px-3 py-2 bg-gray-100 text-gray-700 rounded font-mono text-sm">Ctrl</kbd>
-            <span className="self-center text-gray-400">+</span>
-            <kbd className="px-3 py-2 bg-gray-100 text-gray-700 rounded font-mono text-sm">Shift</kbd>
-            <span className="self-center text-gray-400">+</span>
-            <kbd className="px-3 py-2 bg-gray-100 text-gray-700 rounded font-mono text-sm">A</kbd>
+          <div className="flex items-center gap-2 mb-4 px-4 py-3 bg-gray-50 rounded-lg">
+            <span className="text-sm text-gray-700">
+              Click <span className="font-semibold">Built with AI</span> in the footer <span className="font-semibold">3 times</span>
+            </span>
           </div>
           <p className="text-sm text-gray-500">
-            This key combination can be used on any page to access the admin login.
+            This hidden access method can be used on any page to reach the admin login.
           </p>
         </motion.div>
 

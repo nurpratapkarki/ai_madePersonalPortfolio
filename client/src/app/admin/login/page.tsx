@@ -99,7 +99,7 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="mt-4 text-center text-sm text-gray-500">
-          Press <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Ctrl + Shift + A</kbd> on any page to access this login
+          Click <span className="font-medium">Built with AI</span> in the footer 3 times to access this login
         </p>
       </motion.div>
     </div>
