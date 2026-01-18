@@ -6,42 +6,47 @@ import {
   Sparkles, 
   Cloud,
   Layout,
+  Code,
+  Database,
+  Smartphone,
+  Globe,
+  Cpu,
+  Terminal,
+  LucideIcon,
 } from 'lucide-react';
+import type { SkillCategory } from '@/types';
 
-interface SkillCategory {
-  name: string;
-  icon: React.ReactNode;
-  skills: string[];
-}
-
-const defaultCategories: SkillCategory[] = [
-  {
-    name: 'Frontend',
-    icon: <Layout className="h-6 w-6" />,
-    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-  },
-  {
-    name: 'Backend',
-    icon: <Server className="h-6 w-6" />,
-    skills: ['Node.js', 'Express.js', 'Python', 'MongoDB', 'PostgreSQL'],
-  },
-  {
-    name: 'AI Tools',
-    icon: <Sparkles className="h-6 w-6" />,
-    skills: ['GitHub Copilot', 'Claude', 'ChatGPT', 'Midjourney', 'Prompt Engineering'],
-  },
-  {
-    name: 'DevOps',
-    icon: <Cloud className="h-6 w-6" />,
-    skills: ['Docker', 'AWS', 'Vercel', 'CI/CD', 'Git'],
-  },
-];
+// Icon mapping for dynamic icons from CMS
+const iconMap: Record<string, LucideIcon> = {
+  Monitor: Layout,
+  Layout: Layout,
+  Server: Server,
+  Sparkles: Sparkles,
+  Cloud: Cloud,
+  Code: Code,
+  Database: Database,
+  Smartphone: Smartphone,
+  Globe: Globe,
+  Cpu: Cpu,
+  Terminal: Terminal,
+};
 
 interface SkillsSectionProps {
   categories?: SkillCategory[];
 }
 
-export function SkillsSection({ categories = defaultCategories }: SkillsSectionProps) {
+export function SkillsSection({ categories = [] }: SkillsSectionProps) {
+  // Get the icon component from the icon name
+  const getIcon = (iconName?: string) => {
+    if (!iconName) return <Code className="h-6 w-6" />;
+    const IconComponent = iconMap[iconName];
+    return IconComponent ? <IconComponent className="h-6 w-6" /> : <Code className="h-6 w-6" />;
+  };
+
+  if (categories.length === 0) {
+    return null;
+  }
+
   return (
     <section id="skills" className="py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,7 +76,7 @@ export function SkillsSection({ categories = defaultCategories }: SkillsSectionP
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                  {category.icon}
+                  {getIcon(category.icon)}
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">
                   {category.name}
