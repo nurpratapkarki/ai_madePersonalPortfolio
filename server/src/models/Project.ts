@@ -102,7 +102,6 @@ projectSchema.statics.incrementViewCount = async function (projectId: string): P
 };
 
 // Indexes
-projectSchema.index({ slug: 1 });
 projectSchema.index({ category: 1 });
 projectSchema.index({ featured: 1 });
 projectSchema.index({ createdAt: -1 });

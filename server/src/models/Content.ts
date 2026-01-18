@@ -32,7 +32,4 @@ const contentSchema = new Schema<IContent>(
   }
 );
 
-// Index on section
-contentSchema.index({ section: 1 });
-
 export const Content = mongoose.model<IContent>('Content', contentSchema);

@@ -157,7 +157,6 @@ analyticsSchema.statics.getVisitorStats = async function (
 };
 
 // Indexes for efficient querying
-analyticsSchema.index({ sessionId: 1 });
 analyticsSchema.index({ lastVisit: -1 });
 analyticsSchema.index({ firstVisit: -1 });
 // Compound index for date range queries
