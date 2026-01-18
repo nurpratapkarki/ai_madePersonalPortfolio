@@ -52,10 +52,7 @@ export interface AboutContent {
 }
 
 export interface SkillsContent {
-  categories: Array<{
-    name: string;
-    skills: string[];
-  }>;
+  categories: SkillCategory[];
 }
 
 export interface SkillCategory {

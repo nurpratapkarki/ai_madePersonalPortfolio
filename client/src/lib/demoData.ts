@@ -232,6 +232,8 @@ AI-first development isn't about replacing developers—it's about augmenting ou
 - **Improve Quality**: Get instant code reviews and suggestions
 - **Learn Faster**: Explore new technologies with AI guidance
 - **Focus on Architecture**: Spend more time on design decisions`,
+  photo: '',
+  resumeUrl: '/resume.pdf',
   timeline: [
     { 
       year: '2024', 
