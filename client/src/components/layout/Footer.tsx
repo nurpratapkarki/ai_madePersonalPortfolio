@@ -1,3 +1,7 @@
+'use client';
+
+import { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Github, Linkedin, Mail, Sparkles } from 'lucide-react';
 
@@ -9,6 +13,30 @@ const socialLinks = [
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const router = useRouter();
+  const clickCountRef = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleAIClick = () => {
+    clickCountRef.current += 1;
+
+    // Clear existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // If clicked 3 times, navigate to admin login
+    if (clickCountRef.current === 3) {
+      clickCountRef.current = 0;
+      router.push('/admin/login');
+      return;
+    }
+
+    // Reset count after 1 second of no clicks
+    timeoutRef.current = setTimeout(() => {
+      clickCountRef.current = 0;
+    }, 1000);
+  };
 
   return (
     <footer className="border-t border-gray-200 bg-gray-50">
@@ -28,12 +56,16 @@ export function Footer() {
           </div>
 
           {/* AI Badge */}
-          <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full border border-blue-100">
+          <button
+            onClick={handleAIClick}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full border border-blue-100 hover:border-blue-200 transition-colors cursor-pointer"
+            aria-label="Built with AI"
+          >
             <Sparkles className="h-4 w-4 text-blue-600" />
             <span className="text-sm font-medium text-gray-700">
               Built with AI
             </span>
-          </div>
+          </button>
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
