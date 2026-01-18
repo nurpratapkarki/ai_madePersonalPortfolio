@@ -20,7 +20,7 @@ This guide covers setting up the AI-First Portfolio on both local development an
 
 Before starting, ensure you have:
 
-- **Node.js** v18 or higher
+- **Node.js** v20.9.0 or higher (required for Next.js)
 - **npm** v9 or higher
 - **MongoDB** (local or MongoDB Atlas)
 - **Git** for version control
