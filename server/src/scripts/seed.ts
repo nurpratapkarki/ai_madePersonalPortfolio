@@ -351,10 +351,9 @@ async function seedDatabase(): Promise<void> {
     console.log('👤 Checking admin user...');
     const adminExists = await User.findOne({ role: 'admin' });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash(defaultAdmin.password, 10);
+      // Don't hash password here - the User model pre-save hook does it
       const admin = new User({
         ...defaultAdmin,
-        password: hashedPassword,
       });
       await admin.save();
       console.log('   ✓ Created admin user');
